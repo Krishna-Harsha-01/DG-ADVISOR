@@ -1,0 +1,31 @@
+{
+  "name": "ai-dg-compliance-advisor",
+  "version": "1.0.0",
+  "description": "AI Dangerous Goods Handling Compliance Advisor — HK Shipping Private Limited",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node tests/api.test.js",
+    "build": "echo 'No build step'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "dangerous-goods",
+    "compliance",
+    "ai",
+    "logistics",
+    "hk-shipping"
+  ],
+  "author": "HK Shipping Internship Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.22.5"
+  }
+}

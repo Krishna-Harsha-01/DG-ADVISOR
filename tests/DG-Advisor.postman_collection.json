@@ -1,0 +1,177 @@
+{
+  "info": {
+    "name": "AI DG Compliance Advisor",
+    "description": "Run 'Login (admin)' first to obtain a token (saved to {{authToken}}). All other requests use it automatically via collection-level Bearer auth. Health is public.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "generationId",
+      "value": "1"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    },
+    {
+      "key": "adminCode",
+      "value": "DGADMN"
+    }
+  ],
+  "item": [
+    {
+      "name": "Login (admin) \u2014 run first",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"code\": \"{{adminCode}}\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.test('login ok', () => pm.expect(json.ok).to.be.true);",
+              "if (json.token) { pm.collectionVariables.set('authToken', json.token); }",
+              "console.log('Saved authToken. Role:', json.role);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health",
+        "auth": {
+          "type": "noauth"
+        }
+      }
+    },
+    {
+      "name": "Generate guidance (valid)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/generate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"goodsName\": \"Industrial enamel paint\",\n  \"goodsType\": \"Flammable liquid\",\n  \"unNumber\": \"UN1263\",\n  \"physicalState\": \"Liquid\",\n  \"quantity\": \"12 drums (200 L)\",\n  \"packaging\": \"Steel drums\",\n  \"transportMode\": \"Road\",\n  \"origin\": \"Hyderabad\",\n  \"destination\": \"Chennai\",\n  \"notes\": \"Mixed LTL load\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Generate guidance (invalid - missing fields)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/generate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"goodsName\": \"\"\n}"
+        }
+      }
+    },
+    {
+      "name": "History (list, newest first)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/history"
+      }
+    },
+    {
+      "name": "History (single)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/history/{{generationId}}"
+      }
+    },
+    {
+      "name": "Feedback (rate 1-5)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/feedback",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"generation_id\": {{generationId}},\n  \"rating\": 5,\n  \"comment\": \"Clear and useful\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Templates (list presets)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/templates"
+      }
+    },
+    {
+      "name": "Analytics (quality summary)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/analytics/quality"
+      }
+    },
+    {
+      "name": "Admin analytics (full dashboard)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/admin/analytics"
+      }
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  }
+}

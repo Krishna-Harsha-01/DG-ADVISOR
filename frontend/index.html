@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DG Compliance Advisor · HK Shipping</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="announce"><b>HK Shipping Private Limited</b> — verify every shipment before dispatch with AI-powered dangerous goods compliance</div>
+
+  <header class="hdr">
+    <div class="hdr-inner container">
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span></button>
+      <a class="logo" href="index.html"><span class="logo-mark"></span><span class="logo-text">DG&nbsp;Advisor</span></a>
+      <nav class="primary">
+        <a href="index.html" class=" active">Advisor</a>
+        <a href="history.html" class="">History</a>
+        <a href="admin.html" class=" admin-only">Analytics</a>
+        <a href="staff.html" class=" admin-only">Access Log</a>
+      </nav>
+      <form class="search" id="hdrSearch" role="search">
+        <span class="mag" aria-hidden="true">⌕</span>
+        <input type="text" id="hdrSearchInput" placeholder="Search shipment records" aria-label="Search" />
+      </form>
+      <div class="actions">
+        <a class="icon-btn" href="history.html" title="Saved records">
+          <svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+          <span class="count" id="histCount"></span>
+        </a>
+        <a class="icon-btn admin-only" href="admin.html" title="Analytics">
+          <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        </a>
+        <span class="provider-pill" id="providerPill">AI</span>
+        <span class="user-chip" id="headerUser"></span>
+        <a class="btn btn-ghost btn-sm" id="headerLogout" href="#" style="padding:7px 13px;min-height:36px">Logout</a>
+      </div>
+    </div>
+    <nav class="catbar container" id="catbar"></nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <form class="m-search" id="mSearchForm" role="search">
+      <span class="mag">⌕</span>
+      <input type="text" id="mSearchInput" placeholder="Search shipment records" />
+    </form>
+    <a href="index.html" class=" active">Advisor</a>
+    <a href="history.html" class="">History</a>
+    <a href="admin.html" class=" admin-only">Analytics</a>
+    <a href="staff.html" class=" admin-only">Access Log</a>
+    <div class="m-cat-title">Goods categories</div>
+    <div class="m-cats" id="mCats"></div>
+    <span class="provider-pill" id="providerPillM">AI</span>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <span class="user-chip" id="mHeaderUser" style="font-size:.82rem;color:var(--muted)"></span>
+      <a class="btn btn-ghost btn-sm" id="mHeaderLogout" href="#" style="padding:7px 13px;min-height:36px">Logout</a>
+    </div>
+  </div>
+  <div class="m-overlay" id="mOverlay"></div>
+
+  <section class="hero">
+    <div class="hero-art" aria-hidden="true">
+      <svg class="hero-art-svg" viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <ellipse cx="262" cy="330" rx="208" ry="20" fill="#000000" opacity="0.05"/>
+        <path d="M44 332 H468" stroke="#cfc8bd" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/>
+        <!-- trailer -->
+        <rect x="70" y="150" width="250" height="150" rx="10" fill="#ffffff" stroke="#1a1715" stroke-width="4"/>
+        <line x1="70" y1="186" x2="320" y2="186" stroke="#ece6dd" stroke-width="3"/>
+        <!-- cab -->
+        <path d="M320 300 V196 H372 L420 244 V300 Z" fill="#ffffff" stroke="#1a1715" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M332 210 H368 L398 240 H332 Z" fill="#faf3ee" stroke="#1a1715" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="417" y="284" width="14" height="22" rx="3" fill="#1a1715"/>
+        <!-- wheels -->
+        <circle cx="140" cy="306" r="26" fill="#1a1715"/><circle cx="140" cy="306" r="10.5" fill="#ffffff"/>
+        <circle cx="250" cy="306" r="26" fill="#1a1715"/><circle cx="250" cy="306" r="10.5" fill="#ffffff"/>
+        <circle cx="372" cy="306" r="26" fill="#1a1715"/><circle cx="372" cy="306" r="10.5" fill="#ffffff"/>
+        <!-- hazard placard (diamond) on trailer -->
+        <g transform="translate(195 227) rotate(45)">
+          <rect x="-33" y="-33" width="66" height="66" rx="8" fill="#ea580c"/>
+          <rect x="-33" y="-33" width="66" height="66" rx="8" fill="none" stroke="#ffffff" stroke-width="3"/>
+        </g>
+        <!-- flame mark (upright) -->
+        <path d="M195 206 c11 12 19 18 19 31 a19 19 0 0 1-38 0 c0-10 9-13 10-23 c4 6 6 7 10 6 c-4-6-4-10-1-15 Z" fill="#ffffff"/>
+        <!-- compliance shield with check -->
+        <g transform="translate(388 92)">
+          <path d="M0 -44 L42 -29 V7 C42 36 23 55 0 63 C-23 55 -42 36 -42 7 V-29 Z" fill="#ffffff" stroke="#1a1715" stroke-width="4" stroke-linejoin="round"/>
+          <path d="M-19 6 L-4 21 L21 -11" stroke="#ea580c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <!-- floating hazard diamonds -->
+        <g transform="translate(108 78) rotate(45)"><rect x="-18" y="-18" width="36" height="36" rx="5" fill="none" stroke="#ea580c" stroke-width="4"/></g>
+        <g transform="translate(300 56) rotate(45)"><rect x="-12" y="-12" width="24" height="24" rx="4" fill="#ea580c" opacity="0.85"/></g>
+      </svg>
+    </div>
+    <div class="container">
+      <div class="hero-inner">
+        <span class="eyebrow"><span class="diamond"></span> Dangerous Goods Handling</span>
+        <h1>Check shipment compliance in seconds.</h1>
+        <p>Enter the goods and shipment details. Our AI identifies the applicable dangerous-goods regulations, packaging, labelling, documentation and handling requirements.</p>
+        <div class="hero-actions">
+          <a href="#tool" class="btn btn-accent">Start a compliance check</a>
+          <a href="history.html" class="btn btn-ghost">View history</a>
+        </div>
+        <div class="hero-trust"><span>CMVR · Road</span><span>UN Model Regulations</span><span>Packing &amp; Labelling</span></div>
+      </div>
+    </div>
+  </section>
+  <main>
+    <div class="container">
+      <div class="layout" id="tool">
+        <section class="card" aria-label="Shipment details">
+          <div class="card-head"><span class="step">1</span><div><h2>Shipment Details</h2><div class="sub">All fields with * are required</div></div></div>
+          <div class="card-body">
+            <div class="field"><label>Quick presets</label><div class="presets" id="presets"></div><p class="hint">Click a common HK Shipping scenario to auto-fill the form.</p></div>
+            <form id="dgForm" novalidate>
+              <div class="field" data-field="goodsName"><label>Goods / product name <span class="req">*</span></label><input type="text" name="goodsName" maxlength="200" placeholder="e.g. Industrial enamel paint" /><div class="char-count"><span data-count="goodsName">0</span>/200</div><div class="err">Please enter the goods name.</div></div>
+              <div class="field" data-field="goodsType"><label>Goods type / category <span class="req">*</span><button type="button" id="detectBtn" class="mini-btn">↻ Auto-detect</button></label><select name="goodsType"><option value="">Select a category…</option><option>Flammable liquid</option><option>Flammable solid</option><option>Compressed gas</option><option>Corrosive</option><option>Oxidiser</option><option>Toxic / poison</option><option>Battery / electronics</option><option>Explosive</option><option>General / non-hazardous</option><option>Other / unsure</option></select><div class="detect-status" id="detectStatus"></div><div class="err">Please choose a goods type.</div></div>
+              <div class="row-2">
+                <div class="field" data-field="unNumber"><label>UN number <span class="req">*</span><button type="button" id="detectUnBtn" class="mini-btn">↻ Auto-detect</button></label><input type="text" name="unNumber" maxlength="12" placeholder="e.g. UN1263 or N/A" /><div class="err">Enter the UN number (or N/A if not a dangerous good).</div></div>
+                <div class="field" data-field="physicalState"><label>Physical state</label><select name="physicalState"><option value="">—</option><option>Solid</option><option>Liquid</option><option>Gas</option></select></div>
+              </div>
+              <div class="row-2">
+                <div class="field" data-field="quantity"><label>Quantity / weight</label><input type="text" name="quantity" maxlength="80" placeholder="e.g. 12 drums (200 L)" /></div>
+                <div class="field" data-field="packaging"><label>Packaging</label><input type="text" name="packaging" maxlength="80" placeholder="e.g. Steel drums" /></div>
+              </div>
+              <div class="row-2">
+                <div class="field" data-field="transportMode"><label>Transport mode</label><select name="transportMode"><option selected>Road</option><option>Rail</option><option>Air</option><option>Sea</option></select></div>
+                <div class="field" data-field="origin"><label>Origin</label><input type="text" name="origin" maxlength="60" placeholder="e.g. Hyderabad" /></div>
+              </div>
+              <div class="field" data-field="destination"><label>Destination</label><input type="text" name="destination" maxlength="60" placeholder="e.g. Chennai" /></div>
+              <div class="field" data-field="notes"><label>Additional notes</label><textarea name="notes" maxlength="1000" placeholder="e.g. Mixed LTL load with general cargo"></textarea><div class="char-count"><span data-count="notes">0</span>/1000</div></div>
+              <div style="display:flex;gap:10px"><button type="submit" class="btn btn-primary" id="submitBtn" style="flex:1">Generate Compliance Guidance</button><button type="button" class="btn btn-ghost" id="clearBtn">Clear</button></div>
+            </form>
+          </div>
+        </section>
+        <section class="card" id="output-card" aria-label="Compliance guidance">
+          <div class="card-head"><span class="step">2</span><div><h2>Compliance Guidance</h2><div class="sub">AI-generated · verify against official regulations</div></div></div>
+          <div class="card-body" id="outputBody">
+            <div class="placeholder"><div><div class="ph-mark"></div><h3>No guidance yet</h3><p>Fill in the shipment details and generate AI-powered dangerous-goods compliance guidance.</p></div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <div class="fb-name">HK Shipping Private Limited</div>
+          <p>Road freight logistics managing FTL and LTL trucking for manufacturers, distributors and traders across South India.</p>
+        </div>
+        <div class="foot-links">
+          <div class="foot-col">
+            <h4>Tool</h4>
+            <a href="index.html">Advisor</a>
+            <a href="history.html">Generation History</a>
+            <a href="admin.html" class="admin-only">Analytics Dashboard</a>
+            <a href="staff.html" class="admin-only">Access Log</a>
+          </div>
+          <div class="foot-col">
+            <h4>Compliance</h4>
+            <span>CMVR (Road)</span><span>UN Model Regulations</span><span>Packing &amp; Labelling</span>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 HK Shipping Private Limited · Internship prototype</span>
+        <span>Advisory guidance only — not a substitute for a certified DG advisor.</span>
+      </div>
+    </div>
+  </footer>
+  <div id="toast"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

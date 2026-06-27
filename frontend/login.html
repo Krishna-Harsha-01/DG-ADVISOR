@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in · DG Compliance Advisor</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body { background: var(--soft); display: flex; flex-direction: column; min-height: 100vh; }
+    .login-wrap { flex: 1; display: grid; place-items: center; padding: 32px 18px; }
+    .login-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 44px 40px; width: 100%; max-width: 430px; box-shadow: var(--shadow); }
+    .login-logo { display: flex; align-items: center; gap: 11px; margin-bottom: 30px; }
+    .login-logo .mark { width: 38px; height: 38px; background: var(--ink); border-radius: 9px; display: grid; place-items: center; }
+    .login-logo .mark::before { content: ''; width: 15px; height: 15px; background: var(--accent); transform: rotate(45deg); border: 2px solid #fff; }
+    .login-logo .lt { font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: .5px; text-transform: uppercase; color: var(--ink); }
+    .login-card h1 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; color: var(--ink); margin-bottom: 6px; }
+    .login-card .sub { font-size: .9rem; color: var(--muted); margin-bottom: 28px; }
+    .code-input { width: 100%; height: 60px; border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; background: var(--soft-2);
+      font-family: var(--display); font-weight: 600; font-size: 1.5rem; letter-spacing: 8px; text-align: center; text-transform: uppercase; color: var(--ink); transition: .15s; }
+    .code-input::placeholder { letter-spacing: 6px; color: var(--muted-2); font-weight: 500; }
+    .code-input:focus { outline: none; border-color: var(--ink); background: #fff; box-shadow: 0 0 0 3px rgba(20,20,20,.07); }
+    .login-err { background: var(--danger-soft); border: 1px solid var(--danger-line); border-radius: 10px; padding: 12px 14px; font-size: .86rem; color: var(--accent-dark); margin-bottom: 18px; display: none; }
+    .login-err.show { display: block; }
+    .login-hint { font-size: .8rem; color: var(--muted); margin-top: 12px; text-align: center; }
+    .login-footer { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line-2); font-size: .78rem; color: var(--muted); text-align: center; }
+    .login-footer b { color: var(--ink); }
+    .shift-row { display: flex; gap: 8px; margin-top: 18px; }
+    .shift-pill { flex: 1; text-align: center; font-size: .68rem; font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: .3px; color: var(--muted); background: var(--soft); border: 1px solid var(--line-2); border-radius: 8px; padding: 8px 4px; }
+    .shift-pill b { display: block; color: var(--ink); font-size: .74rem; margin-bottom: 2px; }
+    .shift-pill.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-dark); }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo"><div class="mark"></div><span class="lt">DG Advisor</span></div>
+      <h1>Staff Sign In</h1>
+      <p class="sub">Enter your personal access code to continue</p>
+      <div class="login-err" id="loginErr"></div>
+      <form id="loginForm" novalidate>
+        <input type="text" id="code" name="code" class="code-input" maxlength="6" placeholder="DG0000"
+               autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" />
+        <p class="login-hint">6-character code starting with <b>DG</b> — provided by your administrator. You can sign in only during your assigned shift.</p>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn" style="margin-top:18px">Sign In</button>
+      </form>
+      <div class="shift-row" id="shiftRow">
+        <div class="shift-pill" data-shift="morning"><b>Morning</b>06:00–14:00</div>
+        <div class="shift-pill" data-shift="evening"><b>Evening</b>14:00–22:00</div>
+        <div class="shift-pill" data-shift="night"><b>Night</b>22:00–06:00</div>
+      </div>
+      <div class="login-footer">
+        <b>HK Shipping Private Limited</b> · Dangerous Goods Compliance Advisor<br />
+        <span style="margin-top:5px;display:block">Your code is personal — do not share it with other staff.</span>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+  <script>
+    // already signed in? skip
+    const existing = sessionStorage.getItem("dg_token");
+    const role = sessionStorage.getItem("dg_role");
+    if (existing) { location.href = role === "admin" ? "admin.html" : "index.html"; }
+
+    // highlight the shift that is active right now
+    (function () {
+      const h = new Date().getHours();
+      const active = (h >= 6 && h < 14) ? "morning" : (h >= 14 && h < 22) ? "evening" : "night";
+      const el = document.querySelector(`.shift-pill[data-shift="${active}"]`);
+      if (el) el.classList.add("active");
+    })();
+
+    // show a message if we were bounced here (e.g. shift ended)
+    const msg = sessionStorage.getItem("dg_login_msg");
+    const errBox = document.getElementById("loginErr");
+    if (msg) { errBox.textContent = msg; errBox.classList.add("show"); sessionStorage.removeItem("dg_login_msg"); }
+
+    const form = document.getElementById("loginForm");
+    const input = document.getElementById("code");
+    const btn = document.getElementById("loginBtn");
+    input.addEventListener("input", () => { input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6); });
+    function showErr(m) { errBox.textContent = m; errBox.classList.add("show"); }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); errBox.classList.remove("show");
+      const code = input.value.trim().toUpperCase();
+      if (code.length !== 6) { showErr("Please enter your full 6-character code."); return; }
+      btn.disabled = true; btn.textContent = "Signing in…";
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }),
+        });
+        const json = await res.json();
+        if (!json.ok) { showErr(json.error || "Invalid access code."); return; }
+        sessionStorage.setItem("dg_token", json.token);
+        sessionStorage.setItem("dg_role", json.role);
+        sessionStorage.setItem("dg_user", json.name || "");
+        sessionStorage.setItem("dg_shift", json.shift || "");
+        location.href = json.role === "admin" ? "admin.html" : "index.html";
+      } catch { showErr("Could not reach the server. Please try again."); }
+      finally { btn.disabled = false; btn.textContent = "Sign In"; }
+    });
+    input.focus();
+  </script>
+</body>
+</html>
