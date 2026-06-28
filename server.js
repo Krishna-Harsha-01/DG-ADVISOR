@@ -84,8 +84,14 @@ app.use("/api", (req, res) =>
     console.error("  ✗ Could not connect to MySQL.");
     console.error("    " + (err.code ? err.code + " — " : "") + err.message);
     console.error("  Check that:");
-    console.error("    • your MySQL server is running");
-    console.error("    • DB_HOST / DB_PORT / DB_USER / DB_PASSWORD in .env are correct");
+    console.error("    1. Render Environment Variables are SET:");
+    console.error("       - DB_HOST (currently: " + (process.env.DB_HOST || "NOT SET - USING FALLBACK") + ")");
+    console.error("       - DB_PORT (currently: " + (process.env.DB_PORT || "NOT SET - USING FALLBACK") + ")");
+    console.error("       - DB_USER (currently: " + (process.env.DB_USER || "NOT SET - USING FALLBACK") + ")");
+    console.error("       - DB_PASSWORD (currently: " + (process.env.DB_PASSWORD ? "SET" : "NOT SET") + ")");
+    console.error("    2. Your MySQL server is running at that host/port");
+    console.error("    3. The credentials (user/password) are correct");
+    console.error("    4. Aiven firewall allows connections from Render IP");
     console.error("  The app cannot start without the database. Exiting.");
     console.error("==============================================\n");
     process.exit(1);

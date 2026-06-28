@@ -19,6 +19,15 @@ const CFG = {
   database: process.env.DB_NAME || "defaultdb",
 };
 
+// Debug: log the config being used (hide password)
+console.log("[db.init] Configuration:", {
+  host: CFG.host,
+  port: CFG.port,
+  user: CFG.user,
+  database: CFG.database,
+  passwordSet: !!CFG.password,
+});
+
 let pool;
 
 // JSON columns can come back as objects or strings depending on the
