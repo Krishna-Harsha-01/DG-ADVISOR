@@ -12,7 +12,7 @@
 const mysql = require("mysql2");
 
 const CFG = {
-  host: process.env.DB_HOST || "mysql-17cae1f3-dgadvisor.h.aivencloud.com",
+  host: process.env.DB_HOST || "mysql-1fed495b-dgadvisor.h.aivencloud.com",
   port: Number(process.env.DB_PORT) || 19040,
   user: process.env.DB_USER || "avnadmin",
   password: process.env.DB_PASSWORD || "",
